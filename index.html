@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SongScroller</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: black;
+      color: #D28433;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      height: 100px;
+      margin-bottom: 50px;
+    }
+
+    .imagecontainer {
+      width: 75%;
+    }
+
+    .infosection {
+      display: flex;
+      justify-content: space-around;
+      width: 80%;
+      margin-bottom: 50px;
+    }
+
+    .info-box {
+      width: 150px;
+      height: 80px;
+      background-color: black;
+      color: #D28433;
+      border: 2px solid #D28433;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: all 0.5s ease;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .info-box:hover {
+      width: 50%;
+      height: 150px;
+      font-size: 20px;
+      padding: 20px;
+    }
+
+    .info-box[data-text="how"]::after {
+      content: "click a song and enjoy? start scrolling/ bottom arrow key once youre on a song page. idk you can press reset to reset, you can request songs (i doubt anyone will) at the bottom of the page if i have time ill add a song lol";
+      display: none;
+    }
+
+    .info-box[data-text="what"]::after {
+      content: "one of the most useless websites youll ever come across. you get to manually scroll on the webpage like a retard and get a lyric to that song one by one omg so cool, ya and you cant go backwards asw, DONT MAKE MISTAKES but hey theres a reset button <3";
+      display: none;
+    }
+
+    .info-box:hover::after {
+      display: block;
+    }
+
+    .info-box:hover span {
+      display: none;
+    }
+
+    .library-container {
+      width: 80%;
+      margin: auto;
+      margin-bottom: 30px;
+    }
+
+    .library-title {
+      font-size: 36px;
+      margin-bottom: 20px;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .song-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .song-box {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background-size: cover; /* Ensure full image is visible */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #222; /* Fallback color */
+}
+
+.song-box::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0); /* Initially transparent */
+  transition: background 0.5s ease; /* Smooth darkening transition */
+}
+
+.song-box:hover::after {
+  background: rgba(0, 0, 0, 0.5); /* Dark overlay on hover */
+}
+
+.song-title {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 18px;
+  padding: 10px;
+  transition: opacity 0.5s ease;
+}
+
+.footer {
+  display: flex;
+  justify-content: center; /* Centers the copyright text */
+  align-items: center;
+  padding: 20px;
+  background: black;
+  color: orange;
+  font-size: 18px;
+  position: relative;
+  width: 100%;
+}
+
+.request-link {
+  position: absolute;
+  right: 20px; /* Positions it at the extreme right */
+  color: orange;
+  text-decoration: underline;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.request-link:hover {
+  color: white;
+}
+
+
+
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="imagecontainer">
+      <img src="ss2.png" style="width: 100%;">
+    </div>
+  </div>
+
+  <div class="infosection">
+    <div class="info-box" data-text="how">
+      <span>how to use</span>
+    </div>
+    <div class="info-box" data-text="what">
+      <span>what is this</span>
+    </div>
+  </div>
+  
+  <div class="library-container">
+    <div class="library-title">Song Library</div>
+
+   <div class="song-grid">
+
+  <a href="american.html">
+    <div class="song-box" style="background-image: url(coverimages/americanidiotcover.jpg);">
+      <div class="song-title">American Idiot- Green Day</div>
+    </div>
+  </a>
+
+  <a href="headlines.html">
+    <div class="song-box" style="background-image: url(coverimages/headlinescover.jpg);">
+      <div class="song-title">Headlines- Drake</div>
+    </div>
+  </a>
+
+  <a href="90210.html">
+    <div class="song-box" style="background-image: url(coverimages/90210cover.jpg);">
+      <div class="song-title">90210- Travis Scott</div>
+    </div>
+  </a>
+
+  <a href="mrs.html">
+    <div class="song-box" style="background-image: url(coverimages/mrscover.jpg);">
+      <div class="song-title">Mrs- Central Cee</div>
+    </div>
+  </a>
+
+  <a href="fakeplastic.html">
+    <div class="song-box" style="background-image: url(coverimages/fakeplastictreescover.jpg);">
+      <div class="song-title">Fake Plastic Trees- Radiohead</div>
+    </div>
+  </a>
+
+  </div>
+  </div>
+
+
+  <footer class="footer">
+    <span>Copyright - Atharv 2025</span>
+    <a href="https://tellonym.me/user.23631953" class="request-link">request here</a>
+  </footer>
+  
+
+</body>
+</html>

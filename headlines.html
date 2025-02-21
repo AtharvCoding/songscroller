@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headlines drake</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url(take\ care.jpg) no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Prevents full-page scroll */
+        }
+
+        .container {
+            width: 60%;
+            height: 80vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            scrollbar-width: thin;
+        }
+
+        /* Custom scrollbar */
+        .container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .line {
+            font-size: 1.2rem;
+            opacity: 0.4;
+            transition: all 0.5s ease;
+            text-align: center;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .active {
+            font-size: 1.8rem;
+            opacity: 1;
+        }
+
+        #resetButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: goldenrod;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.5s;
+        }
+
+        #resetButton:hover {
+            background: goldenrod;
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button id="resetButton">Reset</button>
+    <div class="container" id="lyricsContainer"></div>
+    
+    <script>
+        const lyrics = [
+    "I might be too strung out on compliments",
+    "Overdosed on confidence",
+    "Started not to give a fuck and stopped fearin' the consequence",
+    "Drinkin' every night because we drink to my accomplishments",
+    "Faded way too long, I'm floatin' in and out of consciousness",
+    "And they sayin' I'm back, I'd agree with that",
+    "I just take my time with all this shit, I still believe in that",
+    "I had someone tell me I fell off, ooh, I needed that",
+    "And they want to see me pick back up, well, where'd I leave it at?",
+    "I know I exaggerated things, now I got it like that",
+    "Tuck my napkin in my shirt 'cause I'm just mobbin' like that",
+    "You know good and well that you don't want a problem like that",
+    "You gon' make someone around me catch a body like that",
+    "No, don't do it (Ayy), please don't do it (Ayy)",
+    "'Cause one of us goes in, and we all go through it (Ayy)",
+    "And Drizzy got the money, so Drizzy gonna pay it",
+    "Those my brothers, I ain't even gotta say it",
+    "That's just something they know",
+    "",
+    "They know, they know, they know (They know, ayy)",
+    "They know, they know, they know",
+    "They know, they know, they know",
+    "Yeah, they know, yeah",
+    "That the real is on the rise",
+    "Fuck them other guys",
+    "I even gave 'em a chance to decide",
+    "Now it's something they know",
+    "They know, they know, they know",
+    "",
+    "Yeah!",
+    "I be yellin' out, 'Money over everything! Money on my mind!'",
+    "Then she wanna ask when it got so empty",
+    "Tell her I apologize, happened over time",
+    "She says, 'They miss the old Drake', girl don't tempt me",
+    "'If they don't get it, they'll be over you",
+    "That new shit that you got is overdue",
+    "You better do what you supposed to do'",
+    "I'm like, 'Why I gotta be all that?'",
+    "But still I can't deny the fact that it's true",
+    "Listening to you expressin' all them feelings",
+    "Soap opera rappers, all these niggas sound like All My Children",
+    "And that's who you thinkin' is 'bout to come and make a killin'",
+    "I guess it really is just me, myself and all my millions",
+    "You know that they ain't even got it like that",
+    "You gon' hype me up and make me catch a body like that",
+    "'Cause I live for this, it isn't just a hobby like that",
+    "When they get my shit and play it",
+    "I ain't even gotta say it, they know",
+    "",
+    "They know, they know, they know (They know)",
+    "They know, they know, they know",
+    "They know, they know, they know",
+    "Yeah, they know, yeah",
+    "That the real is on the rise",
+    "Fuck them other guys",
+    "I even gave 'em a chance to decide",
+    "Now it's something they know",
+    "They know, they know, they know",
+    "",
+    "I be yelling out 'Money over everything!'",
+    "'Money on my mind, mind, mind-mind!'",
+    "Tell them I apologize, it happened over time, time, time-time",
+    "They know",
+    "They know, they know, they know",
+    "They know, they know, they know",
+    "They know, they know, they know",
+    "Yeah",
+    "",
+    "I heard once that they would rather hear about memories than enemies",
+    "Rather hear what was or what will be than what is",
+    "Rather hear how you got it over how much it cost you",
+    "Rather hear about findin' yourself than how you lost you",
+    "Rather you make this an open letter",
+    "About family, and struggle, and it takin' forever",
+    "About hearts that you've broken, and ties that you've severed",
+    "No doubt in my mind, that'll make them feel better"
+];
+
+        
+        const container = document.getElementById("lyricsContainer");
+        let index = 0;
+        let isAdding = false; // Prevents fast scrolling from adding too many lines
+
+        function addLine() {
+            if (isAdding) return; // Stop if a line is already being added
+            isAdding = true;
+
+            if (index < lyrics.length) {
+                const line = document.createElement("div");
+                line.classList.add("line");
+                line.textContent = lyrics[index];
+                container.appendChild(line);
+
+                setTimeout(() => {
+                    line.classList.add("active");
+                }, 100);
+                
+                index++;
+
+                highlightCurrentLyric();
+
+                // Delayed smooth scroll down
+                setTimeout(() => {
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: "smooth"
+                    });
+                    isAdding = false; // Allow next scroll after animation
+                }, 500); // 0.5s delay
+            } else {
+                isAdding = false; // Reset if no more lyrics
+            }
+        }
+
+        function highlightCurrentLyric() {
+            const lines = document.querySelectorAll(".line");
+            lines.forEach((line, i) => {
+                if (i === lines.length - 1) {
+                    line.classList.add("active");  // Current lyric
+                } else {
+                    line.classList.remove("active");
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener("wheel", addLine);
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowDown") {
+                addLine();
+            }
+        });
+
+        document.getElementById("resetButton").addEventListener("click", () => {
+            location.reload();
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mrs Cench</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url(mrsback.avif) no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Prevents full-page scroll */
+        }
+
+        .container {
+            width: 60%;
+            height: 80vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            scrollbar-width: thin;
+        }
+
+        /* Custom scrollbar */
+        .container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .line {
+            font-size: 1.2rem;
+            opacity: 0.4;
+            transition: all 0.5s ease;
+            text-align: center;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .active {
+            font-size: 1.8rem;
+            opacity: 1;
+        }
+
+        #resetButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.5s;
+            border: solid 1px;
+        }
+
+        #resetButton:hover {
+            background: black;
+            color: white;
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button id="resetButton">Reset</button>
+    <div class="container" id="lyricsContainer"></div>
+    
+    <script>
+       const lyrics = [
+    "I like when your face is beat (uh-huh)",
+    "But I like when your makeup off (alright)",
+    "Tight dress enticin' me (uh-huh)",
+    "But I wanna see you take it off (alright)",
+    "You sent me a text, I didn't respond",
+    "My bad, I just made this song (uh-huh)",
+    "I know why you're not in the mood",
+    "You ain't gotta say what's wrong",
+    "Trap boy, I take my chances",
+    "Are you gonna take my number?",
+    "Let's fly out town and get you one too",
+    "You ain't gotta take my jumper (ha)",
+    "Send me the addy, and tell me come through",
+    "You ain't gotta wait much longer (uh-huh)",
+    "I been through rain and thunder (uh-huh)",
+    "I been through pain and suffer (alright)",
+    "Pavin' a way for my brother",
+    "Stay down 'til the day that you come up",
+    "Get a house by the lake for the summer",
+    "OT for the day, get a run on",
+    "OT for the day, and they're showin' man way more love than I get back home",
+    "(OT for the day, and they're showin' man way more love than I get back home)",
+    "I like when your face is beat",
+    "But I like when your makeup off",
+    "Tight dress enticin' me",
+    "But I wanna see you take it off (alright)",
+    "You sent me a text, I didn't respond",
+    "My bad, I just made this song (uh-huh)",
+    "I know why you're not in the mood",
+    "You ain't gotta say what's wrong",
+    "I'm puttin' myself on",
+    "Then I'm puttin' my team on",
+    "It feel like I'm in a hellhole",
+    "I need a shoulder to lean on",
+    "I must have forgot about love",
+    "All of that shit I would dream of (huh)",
+    "I'm in my OT spot",
+    "Soon as I'm home, I'm takin' your jeans off",
+    "Touchin' your mind and touchin' your G-spot (uh-huh)",
+    "When you're gone, I be fightin' my demons (alright)",
+    "They're tellin' me that you been cheatin' (uh-huh)",
+    "But I don't wanna believe it (you wanna)",
+    "You wanna spend time with me (you wanna)",
+    "You wanna come fly with me, uh",
+    "I fuck you all night on beat (yo)",
+    "I know you gon' cry when I leave (uh-huh)",
+    "Ta-takin' a trip OT, sendin' me pics when it gets lonely",
+    "Up all night, I don't get no sleep",
+    "(I'm tryna) I'm tryna get home safe",
+    "(You're tryna make) you're tryna make man horny, uh",
+    "The trap got me ballin'",
+    "The cats keep on callin' (and what?)",
+    "They catch me from fallin'",
+    "I like when your face is beat",
+    "But I like when your makeup off",
+    "Tight dress enticin' me",
+    "But I wanna see you take it off (alright)",
+    "You sent me a text, I didn't respond",
+    "My bad, I just made this song (uh-huh)",
+    "I know why you're not in the mood",
+    "You ain't gotta say what's wrong"
+];
+
+        
+        const container = document.getElementById("lyricsContainer");
+        let index = 0;
+        let isAdding = false; // Prevents fast scrolling from adding too many lines
+
+        function addLine() {
+            if (isAdding) return; // Stop if a line is already being added
+            isAdding = true;
+
+            if (index < lyrics.length) {
+                const line = document.createElement("div");
+                line.classList.add("line");
+                line.textContent = lyrics[index];
+                container.appendChild(line);
+
+                setTimeout(() => {
+                    line.classList.add("active");
+                }, 100);
+                
+                index++;
+
+                highlightCurrentLyric();
+
+                // Delayed smooth scroll down
+                setTimeout(() => {
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: "smooth"
+                    });
+                    isAdding = false; // Allow next scroll after animation
+                }, 500); // 0.5s delay
+            } else {
+                isAdding = false; // Reset if no more lyrics
+            }
+        }
+
+        function highlightCurrentLyric() {
+            const lines = document.querySelectorAll(".line");
+            lines.forEach((line, i) => {
+                if (i === lines.length - 1) {
+                    line.classList.add("active");  // Current lyric
+                } else {
+                    line.classList.remove("active");
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener("wheel", addLine);
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowDown") {
+                addLine();
+            }
+        });
+
+        document.getElementById("resetButton").addEventListener("click", () => {
+            location.reload();
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>90210 Scroll</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url(trav.jpg) no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Prevents full-page scroll */
+        }
+
+        .container {
+            width: 60%;
+            height: 80vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            scrollbar-width: thin;
+        }
+
+        /* Custom scrollbar */
+        .container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .line {
+            font-size: 1.2rem;
+            opacity: 0.4;
+            transition: all 0.5s ease;
+            text-align: center;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .active {
+            font-size: 1.8rem;
+            opacity: 1;
+        }
+
+        #resetButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.5s;
+        }
+
+        #resetButton:hover {
+            background: black;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button id="resetButton">Reset</button>
+    <div class="container" id="lyricsContainer"></div>
+    
+    <script>
+        const lyrics = [
+            "Mmm, ooh, ooh, ooh, ooh, ooh, ooh, ooh, ooh",
+            "Mama's bailing down that road, craving 9021",
+            "She a porn star girl, oh, from the valley",
+            "Who left her hometown world all for that alley",
+            "Oh, created Lake Tahoe all from her panties",
+            "Used to take the long way home, all for that candy",
+            "Baby's hooked on feeling low",
+            "Do, do, do", "Do, do",
+            "Jacques turned La Flame, now he rolling on an Addy",
+            "Fifty on a chain, 'nother fifty on a Caddy, ooh",
+            "He might pop him a pill, pop him a seal, pop anyone",
+            "Pop anything, pop anything to find that alley",
+            "Baby's hooked on feeling low",
+            "Do, do, do", "Do, do",
+            "In that 90210, 90210, looking for that alley",
+            "It's the superstar girl, roaming in that alley",
+            "Ooh-ah", "Ooh", "Ooh-ooh-ooh-ooh",
+            "Yeah", "My granny called, she said, 'Travvy, you work too hard'",
+            "I'm worried you forget about me",
+            "I'm falling in and out of clouds, don't worry, I'ma get it, granny",
+            "What happened? Now my daddy happy, mama called me up",
+            "That money coming and she love me, I done made it now",
+            "I done found life's meaning now, all them heartbreaks",
+            "Friends turning into frauds",
+            "Practicing half the passion, you want the swag, you can't have it",
+            "Youngest nigga out of Houston at the Grammys",
+            "Smiling at 'em laughing at me",
+            "I passed the rock to Ye, he pump faked and passed it back",
+            "All of this off of rapping, should've wrote this in Latin",
+            "Mmm, I know, I know, I know, I know, I know",
+            "Cuzzo said we in the store, yeah, we 'bout to drop a four",
+            "He passed the cigarette, I choke, woo",
+            "Told my auntie put them 'Ports down",
+            "Now you know you love your own now",
+            "Hit the stage, they got their hands up, don't put your nose down",
+            "I ain't knockin', nigga, I knocked the door down",
+            "Whole crew, I swear they counting on me",
+            "Gold chains, gold rings, I got an island on me",
+            "Houses on me, he got them ounces on him",
+            "Holy Father, come save these niggas, I'm styling on 'em",
+            "Good Lord, I see my good fortune in all these horses",
+            "I'm driving too fast to stop, so all these signs, I ignore them",
+            "Just this guy from north of the border, my chips is in order",
+            "My mom's biggest supporter so now a nigga support her"
+        ];
+        
+        const container = document.getElementById("lyricsContainer");
+        let index = 0;
+        let isAdding = false; // Prevents fast scrolling from adding too many lines
+
+        function addLine() {
+            if (isAdding) return; // Stop if a line is already being added
+            isAdding = true;
+
+            if (index < lyrics.length) {
+                const line = document.createElement("div");
+                line.classList.add("line");
+                line.textContent = lyrics[index];
+                container.appendChild(line);
+
+                setTimeout(() => {
+                    line.classList.add("active");
+                }, 100);
+                
+                index++;
+
+                highlightCurrentLyric();
+
+                // Delayed smooth scroll down
+                setTimeout(() => {
+                    container.scrollTo({
+                        top: container.scrollHeight,
+                        behavior: "smooth"
+                    });
+                    isAdding = false; // Allow next scroll after animation
+                }, 500); // 0.5s delay
+            } else {
+                isAdding = false; // Reset if no more lyrics
+            }
+        }
+
+        function highlightCurrentLyric() {
+            const lines = document.querySelectorAll(".line");
+            lines.forEach((line, i) => {
+                if (i === lines.length - 1) {
+                    line.classList.add("active");  // Current lyric
+                } else {
+                    line.classList.remove("active");
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener("wheel", addLine);
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowDown") {
+                addLine();
+            }
+        });
+
+        document.getElementById("resetButton").addEventListener("click", () => {
+            location.reload();
+        });
+
+    </script>
+</body>
+</html>
